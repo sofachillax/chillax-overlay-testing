@@ -42,6 +42,7 @@ src_compile() {
 	./build.sh --jobs=$(makeopts_jobs) --compiler=gcc || die "Compilation unfortunately failed!"
 }
 src_install() {
+	mkdir -p ${D}/valve/dlls
 	cp ${S}/build/rehlds/filesystem/FileSystem_Stdio/filesystem_stdio.so ${D}/ || die "filesystem_stdio.so could NOT be installed!"
 	cp ${S}/build/rehlds/engine_i486.so ${D}/ || die "engine_i486.so could NOT be installed!"
 	cp ${S}/build/rehlds/dedicated/hlds_linux ${D}/ || die "hlds_linux could NOT be installed!"
