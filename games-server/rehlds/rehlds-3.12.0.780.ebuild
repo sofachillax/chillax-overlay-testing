@@ -44,7 +44,7 @@ src_install() {
 	into /usr/local/rehlds/valve/dlls
 	dolib.so build/rehlds/HLTV/Director/director.so
 
-	into /usr/local/rehlds/
+	into /usr/local/rehlds
 	dolib.so build/rehlds/filesystem/FileSystem_Stdio/filesystem_stdio.so build/rehlds/engine_i486.so build/rehlds/HLTV/DemoPlayer/demoplayer.so build/rehlds/HLTV/Core/core.so build/rehlds/HLTV/Proxy/proxy.so
 
 	exeinto /usr/local/rehlds
