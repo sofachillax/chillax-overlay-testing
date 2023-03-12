@@ -30,8 +30,6 @@ RDEPEND="${DEPEND}"
 BDEPEND=">=dev-util/cmake-3.10
 	>=sys-devel/gcc-4.9.2"
 
-D="/usr/local/rehlds"
-
 pkg_pretend() {
 	einfo "Checking compiler for SSE3 support..."
 	test-flags-CXX -msse -msse2 -msse3 || die "SSE3 not supported by compiler, quitting."
@@ -41,16 +39,16 @@ src_compile() {
 	einfo "Using GCC as a compiler because this ebuild does not support icc/clang (yet?)"
 	./build.sh --jobs=$(makeopts_jobs) --compiler=gcc || die "Compilation unfortunately failed!"
 }
+
 src_install() {
-	mkdir -p ${D}/valve/dlls || die "Directories could NOT be created!"
-	cp ${S}/build/rehlds/filesystem/FileSystem_Stdio/filesystem_stdio.so ${D}/ || die "filesystem_stdio.so could NOT be installed!"
-	cp ${S}/build/rehlds/engine_i486.so ${D}/ || die "engine_i486.so could NOT be installed!"
-	cp ${S}/build/rehlds/dedicated/hlds_linux ${D}/ || die "hlds_linux could NOT be installed!"
-	cp ${S}/build/rehlds/HLTV/DemoPlayer/demoplayer.so ${D}/ || die "demoplayer.so could NOT be installed!"
-	cp ${S}/build/rehlds/HLTV/Director/director.so ${D}/valve/dlls/ || die "director.so could NOT be installed!"
-	cp ${S}/build/rehlds/HLTV/Core/core.so ${D}/ || die "core.so could NOT be installed!"
-	cp ${S}/build/rehlds/HLTV/Console/hltv ${D}/ || die "hltv could NOT be installed!"
-	cp ${S}/build/rehlds/HLTV/Proxy/proxy.so ${D}/ || die "proxy.so could NOT be installed!"
+	into /usr/local/rehlds/valve/dlls
+	dolib.so build/rehlds/HLTV/Director/director.so
+
+	into /usr/local/rehlds/
+	dolib.so build/rehlds/filesystem/FileSystem_Stdio/filesystem_stdio.so build/rehlds/engine_i486.so build/rehlds/HLTV/DemoPlayer/demoplayer.so build/rehlds/HLTV/Core/core.so build/rehlds/HLTV/Proxy/proxy.so
+
+	exeinto /usr/local/rehlds
+	doexe build/rehlds/dedicated/hlds_linux build/rehlds/HLTV/Console/hltv
 }
 
 pkg_postinst() {
